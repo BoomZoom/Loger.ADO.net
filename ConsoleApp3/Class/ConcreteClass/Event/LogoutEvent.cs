@@ -26,7 +26,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
                 commandEvent.Parameters.Add("@UserName", SqlDbType.NVarChar, 255);
                 commandEvent.Parameters.Add("@PcName", SqlDbType.NVarChar, 255);
 
-                commandEvent.Parameters["@Type"].Value = events.Logout;
+                commandEvent.Parameters["@Type"].Value = Events.Logout;
                 commandEvent.Parameters["@Time"].Value = DateTime.Now;
                 commandEvent.Parameters["@UserName"].Value = Environment.UserName;
                 commandEvent.Parameters["@PcName"].Value = Environment.MachineName;
@@ -51,7 +51,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
                 command.Parameters.Add("@UserName", SqlDbType.NVarChar, 255);
                 command.Parameters.Add("@PcName", SqlDbType.NVarChar, 255);
 
-                command.Parameters["@Type"].Value = events.Login;
+                command.Parameters["@Type"].Value = Events.Login;
                 command.Parameters["@UserName"].Value = Environment.UserName;
                 command.Parameters["@PcName"].Value = Environment.MachineName;
 

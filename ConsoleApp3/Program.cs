@@ -11,14 +11,13 @@ using ConsoleApp3.Class.AbstractClass;
 
 namespace ConsoleApp3
 {
-    enum events
+    enum Events
     {
         Login,
         Logout
     }
     class Program
     {
-
         static public EventData GetEvent(string eventType)
         {
             CreatorEvent creator;
@@ -44,24 +43,31 @@ namespace ConsoleApp3
         {
             switch (eventType)
             {
-                case (int)events.Login:
+                case (int)Events.Login:
                     return "LOGIN";
-                case (int)events.Logout:
+                case (int)Events.Logout:
                     return "LOGOUT";
                 default:
                     throw new ArgumentException("Invalid event type");
             }
-}
+        }
         static void Main(string[] args)
         {
-            EventData eventA;
-            
-            {                
+
+            {
                 if (args.Length != 0)
                 {
-                    eventA = GetEvent(args[0]);
-                    eventA.Init();
-                    eventA.Save();
+                    try
+                    {
+                        EventData eventA;
+                        eventA = GetEvent(args[0]);
+                        eventA.Init();
+                        eventA.Save();
+                    }
+                    catch (ArgumentException aex)
+                    {
+                        Console.WriteLine(aex.Message.ToString());
+                    }
                 }
                 else
                 {
@@ -78,7 +84,7 @@ namespace ConsoleApp3
                     int line = 0;
                     while (reader.Read())
                     {
-                        if (line==0)
+                        if (line == 0)
                         {
                             for (int i = 0; i < reader.FieldCount; i++)
                             {
@@ -99,15 +105,15 @@ namespace ConsoleApp3
                     {
                         var temp = table.Rows[i].ItemArray;
 
-                        for (int j = 0; j < temp.Length-1; j++)
+                        for (int j = 0; j < temp.Length - 1; j++)
                         {
 
-                            Console.Write(temp[j]+"\t");
-                            
+                            Console.Write(temp[j] + "\t");
+
                         }
                         int eventType = Convert.ToInt32(temp[temp.Length - 1]);
                         Console.Write(GetEventLabel(eventType));
-                        
+
                         Console.WriteLine();
                     }
 
@@ -115,7 +121,7 @@ namespace ConsoleApp3
                     connection.Dispose();
 
                 }
-            } 
+            }
         }
-    }  
+    }
 }

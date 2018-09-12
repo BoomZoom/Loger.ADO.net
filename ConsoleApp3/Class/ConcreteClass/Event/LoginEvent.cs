@@ -23,7 +23,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
 
         public override void Save()
         {
-            commandEvent.Parameters["@Type"].Value = events.Login;
+            commandEvent.Parameters["@Type"].Value = Events.Login;
             commandEvent.Parameters["@Time"].Value = DateTime.Now;
             commandEvent.Parameters["@UserName"].Value = Environment.UserName;
             commandEvent.Parameters["@PcName"].Value = Environment.MachineName;
