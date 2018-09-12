@@ -42,11 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\AbstractClass\CreatorEvent.cs" />
+    <Compile Include="Class\AbstractClass\EventData.cs" />
+    <Compile Include="Class\ConcreteClass\Creator\CreatorError.cs" />
+    <Compile Include="Class\ConcreteClass\Creator\CreatorLoginEvent.cs" />
+    <Compile Include="Class\ConcreteClass\Creator\CreatorLogoutEvent.cs" />
+    <Compile Include="Class\ConcreteClass\Event\ErrorEvent.cs" />
+    <Compile Include="Class\ConcreteClass\Event\LoginEvent.cs" />
+    <Compile Include="Class\ConcreteClass\Event\LogoutEvent.cs" />
+    <Compile Include="Interface\IEventCreator.cs" />
+    <Compile Include="Interface\IEventData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
