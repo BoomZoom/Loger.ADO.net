@@ -9,7 +9,7 @@ namespace ConsoleApp3.Class.AbstractClass
     {
         static string connectionString = @"server=DESKTOP-PC73D7E\SQLEXPRESS;database=test;integrated Security=SSPI;";
         protected SqlConnection connectionDB;
-        protected SqlCommand comand;
+        protected SqlCommand commandEvent;
         public EventData()
         {
             Conect();
@@ -25,7 +25,7 @@ namespace ConsoleApp3.Class.AbstractClass
 
 
             string queryStatement = "SELECT TOP 5 * FROM dbo.Log";
-            comand = new SqlCommand(queryStatement, connectionDB);
+            commandEvent = new SqlCommand(queryStatement, connectionDB);
 
             try
             {
@@ -77,7 +77,7 @@ namespace ConsoleApp3.Class.AbstractClass
 
         protected void Disconect()
         {
-            comand.Dispose();
+            commandEvent.Dispose();
             connectionDB.Close();
             connectionDB.Dispose();
         }

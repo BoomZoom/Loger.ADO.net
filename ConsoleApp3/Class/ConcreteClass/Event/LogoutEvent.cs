@@ -17,27 +17,32 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
             SqlTransaction sqlT = connectionDB.BeginTransaction();
             try
             {
-                comand.Transaction = sqlT;
+                commandEvent.Transaction = sqlT;
 
-                comand.CommandText = @"INSERT INTO log (Type,Time,UserName,PcName) VALUES (@Type,@Time,@UserName,@PcName)";
+                commandEvent.CommandText = @"INSERT INTO log (Type,Time,UserName,PcName) VALUES (@Type,@Time,@UserName,@PcName)";
 
-                comand.Parameters.Add("@Type", SqlDbType.TinyInt);
-                comand.Parameters.Add("@Time", SqlDbType.DateTime);
-                comand.Parameters.Add("@UserName", SqlDbType.NVarChar, 255);
-                comand.Parameters.Add("@PcName", SqlDbType.NVarChar, 255);
+                commandEvent.Parameters.Add("@Type", SqlDbType.TinyInt);
+                commandEvent.Parameters.Add("@Time", SqlDbType.DateTime);
+                commandEvent.Parameters.Add("@UserName", SqlDbType.NVarChar, 255);
+                commandEvent.Parameters.Add("@PcName", SqlDbType.NVarChar, 255);
 
-                comand.Parameters["@Type"].Value = events.Logout;
-                comand.Parameters["@Time"].Value = DateTime.Now;
-                comand.Parameters["@UserName"].Value = Environment.UserName;
-                comand.Parameters["@PcName"].Value = Environment.MachineName;
+                commandEvent.Parameters["@Type"].Value = events.Logout;
+                commandEvent.Parameters["@Time"].Value = DateTime.Now;
+                commandEvent.Parameters["@UserName"].Value = Environment.UserName;
+                commandEvent.Parameters["@PcName"].Value = Environment.MachineName;
 
-                comand.ExecuteNonQuery();
+                commandEvent.ExecuteNonQuery();
 
-                comand.CommandText = @"INSERT INTO WorkTime (LogId) VALUES (@LogId)";
+                commandEvent.CommandText = @"INSERT INTO WorkTime (LogId) VALUES (@LogId)";
 
-                comand.Parameters.Add("@LogId", SqlDbType.Int);
 
-                SqlCommand command = new SqlCommand("SELECT MAX(Id) FROM Log WHERE Type=@Type AND UserName=@UserName AND PcName=@PcName", connection: connectionDB);
+                SqlCommand command = new SqlCommand(
+                    @"SELECT TOP(1) Id                  
+                        FROM Log                        
+                        WHERE Type=@Type                    
+                            AND UserName=@UserName      
+                            AND PcName=@PcName          
+                        GROUP BY Time DESC", connection: connectionDB);//TODO test it
 
                 command.Transaction = sqlT;
 
@@ -52,9 +57,23 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
 
                 int logId = (int)command.ExecuteScalar();
 
-                comand.Parameters["@LogId"].Value = logId;
+                SqlCommand sqlCommand = new SqlCommand(@"
+                    SELECT TOP(1) Time
+                        FROM Log
+                        WHERE Id=@Id", connectionDB);
+                sqlCommand.Parameters.Add("@Id", SqlDbType.Int);
+                sqlCommand.Parameters["@Id"].Value = logId;
 
-                comand.ExecuteNonQuery();
+
+
+                commandEvent.Parameters.Add("@LogId", SqlDbType.Int);
+                commandEvent.Parameters["@LogId"].Value = logId;
+                commandEvent.Parameters.Add("@WorkTime", SqlDbType.Int);
+                commandEvent.Parameters["@WorkTime"].Value =
+                    Convert.ToInt32(DateTime.Now - (DateTime)sqlCommand.ExecuteScalar());//TODO test it
+
+
+                commandEvent.ExecuteNonQuery();
 
                 sqlT.Commit();
 
