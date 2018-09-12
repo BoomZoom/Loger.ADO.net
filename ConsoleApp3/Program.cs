@@ -21,11 +21,8 @@ namespace ConsoleApp3
         static void Main(string[] args)
         {
             EventData eventA;
-            CreatorEvent creator;
-            // if (args[0] != string.Empty)
-            {
-                //try
-                //{
+            CreatorEvent creator;            
+            {                
                 if (args.Length != 0)
                 {
 
@@ -54,29 +51,7 @@ namespace ConsoleApp3
                 {
                     Console.WriteLine("входных параметров нет!!!");
                 }
-
-                //}
-                //catch (IndexOutOfRangeException)
-                //{
-                //    Console.WriteLine("входных параметров нет!!!");
-                //}
-
-            }
-
-            //if (Console.Read() == (int)ConsoleKey.A)
-            //{
-            //    creator = new CreatorLoginEvent();
-            //}
-            //else
-            //{
-            //    creator = new CreatorLogoutEvent();
-            //}
-            //eventA = creator.Creator();
-            //eventA.InIt();
-            //eventA.Save();
-
+            } 
         }
     }  
-
-    
 }
