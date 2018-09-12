@@ -4,6 +4,6 @@ namespace ConsoleApp3.Class.AbstractClass
 {
     abstract class CreatorEvent : IEventCreator
     {
-        public abstract EventData Creator();
+        public abstract EventData Create();
     }
 }

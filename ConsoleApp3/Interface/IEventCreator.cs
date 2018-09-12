@@ -4,6 +4,6 @@ namespace ConsoleApp3.Interface
 {
     internal interface IEventCreator
     {
-        EventData Creator();
+        EventData Create();
     }
 }

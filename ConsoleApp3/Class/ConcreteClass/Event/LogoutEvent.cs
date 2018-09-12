@@ -7,7 +7,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
 {
     class LogoutEvent : EventData
     {
-        public override void InIt()
+        public override void Init()
         {
             Console.WriteLine("EventLogout Вошли");
         }

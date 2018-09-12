@@ -7,7 +7,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
 {
     class ErrorEvent : EventData
     {
-        public override void InIt()
+        public override void Init()
         {
             Console.WriteLine("");
         }

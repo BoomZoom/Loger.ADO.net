@@ -81,7 +81,7 @@ namespace ConsoleApp3.Class.AbstractClass
             connectionDB.Close();
             connectionDB.Dispose();
         }
-        abstract public void InIt();
+        abstract public void Init();
         abstract public void Save();
 
     }

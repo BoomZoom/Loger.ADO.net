@@ -5,7 +5,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Creator
 {
     class CreatorLogoutEvent : CreatorEvent
     {
-        public override EventData Creator()
+        public override EventData Create()
         {
             return new LogoutEvent();
         }

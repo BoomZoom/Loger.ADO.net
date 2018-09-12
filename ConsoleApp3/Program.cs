@@ -18,38 +18,102 @@ namespace ConsoleApp3
     }
     class Program
     {
+
+        static public EventData GetEvent(string eventType)
+        {
+            CreatorEvent creator;
+            switch (eventType)
+            {
+                case "Login":
+                    {
+                        creator = new CreatorLoginEvent();
+                    }
+                    break;
+                case "Logout":
+                    {
+                        creator = new CreatorLogoutEvent();
+                    }
+                    break;
+                default:
+                    throw new Exception("неправельный параметр!!!");
+            }
+            return creator.Create();
+        }
+
+        static public string GetEventLabel(int eventType)
+        {
+            switch (eventType)
+            {
+                case (int)events.Login:
+                    return "LOGIN";
+                case (int)events.Logout:
+                    return "LOGOUT";
+                default:
+                    throw new ArgumentException("Invalid event type");
+            }
+}
         static void Main(string[] args)
         {
             EventData eventA;
-            CreatorEvent creator;            
+            
             {                
                 if (args.Length != 0)
                 {
-
-                    switch (args[0])
-                    {
-                        case "Login":
-                            {
-                                creator = new CreatorLoginEvent();
-                            }
-                            break;
-                        case "Logout":
-                            {
-                                creator = new CreatorLogoutEvent();
-                            }
-                            break;
-                        default:
-                            creator = new CreatorError();
-                            break;
-
-                    }
-                    eventA = creator.Creator();
-                    eventA.InIt();
+                    eventA = GetEvent(args[0]);
+                    eventA.Init();
                     eventA.Save();
                 }
                 else
                 {
-                    Console.WriteLine("входных параметров нет!!!");
+                    SqlConnection connection = new SqlConnection(@"server=DESKTOP-PC73D7E\SQLEXPRESS;database=test;integrated Security=SSPI;");
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(@"SELECT Time,UserName,PcName,WorkTime,Type
+                        FROM Log as L
+                        LEFT JOIN WorkTime AS WT
+                            ON L.Id = WT.LogId 
+                        WHERE Time < DATEADD(day,1,GETDATE())",
+                        connection);
+                    DataTable table = new DataTable();
+                    SqlDataReader reader = command.ExecuteReader();
+                    int line = 0;
+                    while (reader.Read())
+                    {
+                        if (line==0)
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                table.Columns.Add(reader.GetName(i));
+                            }
+                            ++line;
+                        }
+                        DataRow row = table.NewRow();
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            row[i] = reader[i];
+                        }
+                        table.Rows.Add(row);
+
+                    }
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        var temp = table.Rows[i].ItemArray;
+
+                        for (int j = 0; j < temp.Length-1; j++)
+                        {
+
+                            Console.Write(temp[j]+"\t");
+                            
+                        }
+                        int eventType = Convert.ToInt32(temp[temp.Length - 1]);
+                        Console.Write(GetEventLabel(eventType));
+                        
+                        Console.WriteLine();
+                    }
+
+
+                    connection.Dispose();
+
                 }
             } 
         }

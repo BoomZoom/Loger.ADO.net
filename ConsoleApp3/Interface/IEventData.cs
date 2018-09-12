@@ -12,6 +12,6 @@ namespace ConsoleApp3.Interface
         /// сохраняет событие
         /// </summary>
     	void Save();
-        void InIt();
+        void Init();
     }
 }

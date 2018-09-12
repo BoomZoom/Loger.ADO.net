@@ -16,7 +16,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
             commandEvent.Parameters.Add("@UserName", SqlDbType.NVarChar, 255);
             commandEvent.Parameters.Add("@PcName", SqlDbType.NVarChar, 255);
         }
-        public override void InIt()
+        public override void Init()
         {
             Console.WriteLine("EventLogin Вошли");
         }
