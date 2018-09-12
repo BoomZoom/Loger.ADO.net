@@ -33,7 +33,7 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
 
                 commandEvent.ExecuteNonQuery();
 
-                commandEvent.CommandText = @"INSERT INTO WorkTime (LogId) VALUES (@LogId)";
+                commandEvent.CommandText = @"INSERT INTO WorkTime (LogId,WorkTime) VALUES (@LogId,@WorkTime)";
 
 
                 SqlCommand command = new SqlCommand(
@@ -42,9 +42,10 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
                         WHERE Type=@Type                    
                             AND UserName=@UserName      
                             AND PcName=@PcName          
-                        GROUP BY Time DESC", connection: connectionDB);//TODO test it
-
+                        ORDER BY Time DESC", connection: connectionDB);//TODO test it
+                
                 command.Transaction = sqlT;
+
 
                 command.Parameters.Add("@Type", SqlDbType.TinyInt);
                 command.Parameters.Add("@UserName", SqlDbType.NVarChar, 255);
@@ -64,14 +65,14 @@ namespace ConsoleApp3.Class.ConcreteClass.Event
                 sqlCommand.Parameters.Add("@Id", SqlDbType.Int);
                 sqlCommand.Parameters["@Id"].Value = logId;
 
-
+                sqlCommand.Transaction = sqlT;
 
                 commandEvent.Parameters.Add("@LogId", SqlDbType.Int);
                 commandEvent.Parameters["@LogId"].Value = logId;
                 commandEvent.Parameters.Add("@WorkTime", SqlDbType.Int);
-                commandEvent.Parameters["@WorkTime"].Value =
-                    Convert.ToInt32(DateTime.Now - (DateTime)sqlCommand.ExecuteScalar());//TODO test it
-
+                commandEvent.Parameters["@WorkTime"].Value = 
+                   (DateTime.Now - (DateTime)sqlCommand.ExecuteScalar()).Seconds;//TODO test it
+                Console.WriteLine("WorkTime: "+(DateTime.Now - (DateTime)sqlCommand.ExecuteScalar()).Seconds);
 
                 commandEvent.ExecuteNonQuery();
 
